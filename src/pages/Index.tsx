@@ -3,6 +3,8 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import { MenstrualCycleTracker } from '@/components/MenstrualCycleTracker';
+import { WellnessPlate } from '@/components/WellnessPlate';
 
 // ============== MOCK DATA ==============
 
@@ -18,6 +20,10 @@ interface Patient {
   waterIntake: number;
   dietCharts: DietChart[];
   feedback: string;
+  menstrualCycle?: {
+    currentDay: number;
+    cycleLength: number;
+  };
 }
 
 interface DietChart {
@@ -29,6 +35,13 @@ interface DietChart {
 interface Meal {
   time: string;
   items: FoodItem[];
+  macros: {
+    carbs: number;
+    protein: number;
+    fats: number;
+  };
+  tastes: string[];
+  properties: string[];
 }
 
 interface FoodItem {
@@ -69,6 +82,10 @@ const mockPatients: Patient[] = [
     allergies: ['Dairy'],
     mealFrequency: 4,
     waterIntake: 8,
+    menstrualCycle: {
+      currentDay: 5,
+      cycleLength: 28
+    },
     dietCharts: [
       {
         id: 'dc1',
@@ -76,6 +93,9 @@ const mockPatients: Patient[] = [
         meals: [
           {
             time: 'Breakfast (7:00 AM)',
+            macros: { carbs: 60, protein: 25, fats: 15 },
+            tastes: ['Sweet', 'Astringent', 'Bitter', 'Pungent'],
+            properties: ['Warm', 'Light', 'Easy to digest'],
             items: [
               {
                 name: 'Oats Porridge with Almonds',
@@ -95,6 +115,9 @@ const mockPatients: Patient[] = [
           },
           {
             time: 'Mid-Morning (10:30 AM)',
+            macros: { carbs: 85, protein: 5, fats: 10 },
+            tastes: ['Sweet'],
+            properties: ['Cooling', 'Light', 'Easy to digest'],
             items: [
               {
                 name: 'Fresh Fruit (Papaya)',
@@ -107,6 +130,9 @@ const mockPatients: Patient[] = [
           },
           {
             time: 'Lunch (1:00 PM)',
+            macros: { carbs: 55, protein: 30, fats: 15 },
+            tastes: ['Sweet', 'Astringent', 'Bitter'],
+            properties: ['Warm', 'Nourishing', 'Balancing'],
             items: [
               {
                 name: 'Brown Rice with Moong Dal',
@@ -126,6 +152,9 @@ const mockPatients: Patient[] = [
           },
           {
             time: 'Evening Snack (4:30 PM)',
+            macros: { carbs: 20, protein: 20, fats: 60 },
+            tastes: ['Sweet'],
+            properties: ['Warm', 'Heavy', 'Nourishing'],
             items: [
               {
                 name: 'Mixed Nuts',
@@ -138,6 +167,9 @@ const mockPatients: Patient[] = [
           },
           {
             time: 'Dinner (7:30 PM)',
+            macros: { carbs: 50, protein: 25, fats: 25 },
+            tastes: ['Sweet', 'Salty', 'Astringent'],
+            properties: ['Easy to digest', 'Warm', 'Cooling', 'Soothing'],
             items: [
               {
                 name: 'Vegetable Khichdi',
@@ -183,6 +215,10 @@ const mockPatients: Patient[] = [
     allergies: [],
     mealFrequency: 3,
     waterIntake: 7,
+    menstrualCycle: {
+      currentDay: 18,
+      cycleLength: 30
+    },
     dietCharts: [],
     feedback: ''
   }
@@ -601,6 +637,14 @@ const Index = () => {
           </Card>
         </div>
 
+        {/* Menstrual Cycle Tracking for Female Patients */}
+        {selectedPatient.gender === 'Female' && selectedPatient.menstrualCycle && (
+          <MenstrualCycleTracker 
+            currentDay={selectedPatient.menstrualCycle.currentDay}
+            cycleLength={selectedPatient.menstrualCycle.cycleLength}
+          />
+        )}
+
         <Card className="p-6 shadow-[var(--shadow-soft)]">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-foreground">Diet Charts</h2>
@@ -639,49 +683,16 @@ const Index = () => {
                     })}
                   </p>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     {chart.meals.map((meal, mIdx) => (
-                      <Card key={mIdx} className="p-4 bg-accent/30">
-                        <h3 className="font-semibold text-lg mb-3 text-foreground">{meal.time}</h3>
-                        <div className="space-y-3">
-                          {meal.items.map((item, iIdx) => (
-                            <div key={iIdx} className="bg-card p-4 rounded-lg">
-                              <div className="flex justify-between items-start mb-2">
-                                <div>
-                                  <p className="font-semibold text-foreground">{item.name}</p>
-                                  <p className="text-sm text-muted-foreground">{item.quantity}</p>
-                                </div>
-                                <span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-full">
-                                  {item.calories} cal
-                                </span>
-                              </div>
-                              
-                              <div className="grid grid-cols-2 gap-3 mt-3">
-                                <div>
-                                  <p className="text-xs font-semibold text-muted-foreground mb-1">Rasa (Taste)</p>
-                                  <div className="flex flex-wrap gap-1">
-                                    {item.rasa.map((r, rIdx) => (
-                                      <span key={rIdx} className="px-2 py-0.5 bg-primary/10 text-primary text-xs rounded">
-                                        {r}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                                <div>
-                                  <p className="text-xs font-semibold text-muted-foreground mb-1">Properties</p>
-                                  <div className="flex flex-wrap gap-1">
-                                    {item.properties.map((p, pIdx) => (
-                                      <span key={pIdx} className="px-2 py-0.5 bg-accent text-accent-foreground text-xs rounded">
-                                        {p}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </Card>
+                      <WellnessPlate
+                        key={mIdx}
+                        mealTime={meal.time}
+                        macros={meal.macros}
+                        tastes={meal.tastes}
+                        properties={meal.properties}
+                        foodItems={meal.items}
+                      />
                     ))}
                   </div>
                 </div>
