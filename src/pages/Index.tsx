@@ -42,6 +42,7 @@ interface Meal {
   };
   tastes: string[];
   properties: string[];
+  tasir?: string;
 }
 
 interface FoodItem {
@@ -96,6 +97,7 @@ const mockPatients: Patient[] = [
             macros: { carbs: 60, protein: 25, fats: 15 },
             tastes: ['Sweet', 'Astringent', 'Bitter', 'Pungent'],
             properties: ['Warm', 'Light', 'Easy to digest'],
+            tasir: 'Hot',
             items: [
               {
                 name: 'Oats Porridge with Almonds',
@@ -118,6 +120,7 @@ const mockPatients: Patient[] = [
             macros: { carbs: 85, protein: 5, fats: 10 },
             tastes: ['Sweet'],
             properties: ['Cooling', 'Light', 'Easy to digest'],
+            tasir: 'Cold',
             items: [
               {
                 name: 'Fresh Fruit (Papaya)',
@@ -133,6 +136,7 @@ const mockPatients: Patient[] = [
             macros: { carbs: 55, protein: 30, fats: 15 },
             tastes: ['Sweet', 'Astringent', 'Bitter'],
             properties: ['Warm', 'Nourishing', 'Balancing'],
+            tasir: 'Hot',
             items: [
               {
                 name: 'Brown Rice with Moong Dal',
@@ -155,6 +159,7 @@ const mockPatients: Patient[] = [
             macros: { carbs: 20, protein: 20, fats: 60 },
             tastes: ['Sweet'],
             properties: ['Warm', 'Heavy', 'Nourishing'],
+            tasir: 'Hot',
             items: [
               {
                 name: 'Mixed Nuts',
@@ -170,6 +175,7 @@ const mockPatients: Patient[] = [
             macros: { carbs: 50, protein: 25, fats: 25 },
             tastes: ['Sweet', 'Salty', 'Astringent'],
             properties: ['Easy to digest', 'Warm', 'Cooling', 'Soothing'],
+            tasir: 'Hot',
             items: [
               {
                 name: 'Vegetable Khichdi',
@@ -688,10 +694,11 @@ const Index = () => {
                       <WellnessPlate
                         key={mIdx}
                         mealTime={meal.time}
-                        macros={meal.macros}
-                        tastes={meal.tastes}
-                        properties={meal.properties}
-                        foodItems={meal.items}
+                              macros={meal.macros}
+                              tastes={meal.tastes}
+                              properties={meal.properties}
+                              tasir={meal.tasir}
+                              foodItems={meal.items}
                       />
                     ))}
                   </div>

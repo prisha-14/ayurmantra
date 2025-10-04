@@ -9,6 +9,7 @@ interface WellnessPlateProps {
   };
   tastes: string[];
   properties: string[];
+  tasir?: string;
   foodItems: Array<{ name: string; quantity: string; calories: number }>;
 }
 
@@ -30,7 +31,7 @@ const tasteColors: { [key: string]: string } = {
   'Astringent': 'bg-purple-400/80 text-purple-900',
 };
 
-export const WellnessPlate = ({ mealTime, macros, tastes, properties, foodItems }: WellnessPlateProps) => {
+export const WellnessPlate = ({ mealTime, macros, tastes, properties, tasir, foodItems }: WellnessPlateProps) => {
   const totalCalories = foodItems.reduce((sum, item) => sum + item.calories, 0);
   
   // Calculate angles for conic gradient
@@ -118,6 +119,22 @@ export const WellnessPlate = ({ mealTime, macros, tastes, properties, foodItems 
         
         {/* Meal Details */}
         <div className="space-y-4">
+          {/* Tasir (Potency) */}
+          {tasir && (
+            <div>
+              <p className="text-sm font-semibold text-muted-foreground mb-2">Tasir (Potency)</p>
+              <div className="flex items-center gap-2">
+                <span className={`px-4 py-2 rounded-full text-sm font-medium ${
+                  tasir === 'Hot' 
+                    ? 'bg-destructive/10 text-destructive' 
+                    : 'bg-primary/10 text-primary'
+                }`}>
+                  {tasir === 'Hot' ? '🔥' : '❄️'} {tasir}
+                </span>
+              </div>
+            </div>
+          )}
+          
           {/* Guna (Properties) */}
           <div>
             <p className="text-sm font-semibold text-muted-foreground mb-2">Guna (Properties)</p>
