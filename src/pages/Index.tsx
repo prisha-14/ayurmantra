@@ -900,8 +900,11 @@ const Index = () => {
       {/* Sidebar */}
       <div className="w-64 bg-sidebar text-sidebar-foreground shadow-[var(--shadow-medium)] flex flex-col">
         <div className="p-6 border-b border-sidebar-border">
-          <h1 className="text-2xl font-bold">AyuMantra</h1>
-          <p className="text-sm text-sidebar-foreground/70 mt-1">Ayurvedic Diet System</p>
+          <div className="flex items-center gap-3 mb-2">
+            <img src="/ayumantra-icon.png" alt="AyuMantra" className="w-10 h-10" />
+            <h1 className="text-2xl font-bold">AyuMantra</h1>
+          </div>
+          <p className="text-sm text-sidebar-foreground/70">Ayurvedic Diet System</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
